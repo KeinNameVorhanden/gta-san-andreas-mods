@@ -1,0 +1,64 @@
+# Story runner, one chunk of the whole story: San Fierro: Zero's RC shop bought, the driving school, Zero's missions, Jizzy's two parts, Woozie's strand.
+# Starts from the save in slot5 (made by the previous chunk), stops next to the marker of 'Monster' and saves that point into slot4 for the
+# next chunk. Phone calls are answered by the runner. Fails at once when the runner stops early.
+name = "mod_story_runner_sf"
+tier = "full"  # long: run with --tier full (story runner changes, releases)
+chain = "story"  # each chunk starts from the save the one before made: one copy, in order
+chain_order = 3
+timeout_seconds = 3300
+
+[mod_config.mission_pass]
+load_story_saves = false  # play every mission (the chunk also writes the story saves on the way)
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "load_save"
+name = "slot5"
+
+[[step]]
+action = "wait_seconds"
+value = 15
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 90
+
+[[step]]
+action = "wait_seconds"
+value = 3
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "save_to"
+contains = "slot4"
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "run_to"
+contains = "Monster"
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: Ready for Monster: saved to slot4."
+fail_contains = "mission_pass: Story runner stopped"
+timeout = 3000
+
+[[step]]
+action = "expect_save_valid"
+name = "slot4"
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "save_to"
+contains = "off"
+
+[[step]]
+action = "quit"

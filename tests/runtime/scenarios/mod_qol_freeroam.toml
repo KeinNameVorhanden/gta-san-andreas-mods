@@ -1,0 +1,268 @@
+# QoL mods in one run: a new game is brought to free roam the way a player with the mods would (cutscenes
+# skipped, In the Beginning finished, Big Smoke failed once and retried, then passed), and every mod that can be
+# driven by keys or live settings is exercised on the way: streaming memory, GPS graph, mission retry, autosave,
+# HUD toggle and photo mode, time and weather, police, frame rate, raw mouse, GPS route, waypoint teleport and
+# safehouse fast travel.
+name = "mod_qol_freeroam"
+timeout_seconds = 600
+
+[mod_config.cutscene_skip]
+auto_skip = true
+
+[[step]]
+action = "expect_log"
+contains = "radar: GPS: road graph with"
+timeout = 30
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_log"
+contains = "streaming_memory: streaming memory"
+timeout = 20
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission started: 2 'In the Beginning'"
+timeout = 30
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "wait_seconds"
+value = 0.4
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: Finished In the Beginning."
+timeout = 20
+
+# Big Smoke: start it, die, retry from the marker.
+
+[[step]]
+action = "wait_seconds"
+value = 1
+
+[[step]]
+action = "teleport"
+x = 2495.214
+y = -1687.03
+z = 12.514
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission started: 11 'Big Smoke'"
+timeout = 30
+
+[[step]]
+action = "wait_player"
+field = "cutscene"
+min = 0
+max = 0
+timeout = 30
+
+[[step]]
+action = "wait_seconds"
+value = 2
+
+[[step]]
+action = "set_health"
+value = 0
+
+[[step]]
+action = "expect_log"
+contains = "ended: failed, retry offered"
+timeout = 40
+
+[[step]]
+action = "expect_log"
+contains = "mission_retry: Mission failed. Press F4"
+timeout = 60
+
+[[step]]
+action = "press_key"
+value = 115
+
+[[step]]
+action = "expect_log"
+contains = "mission_retry: retry: back at the marker"
+timeout = 10
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "wait_seconds"
+value = 0.4
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission passed: 'Big Smoke'"
+timeout = 45
+
+[[step]]
+action = "expect_log"
+contains = "autosave: Autosaved ("
+timeout = 60
+
+# HUD and photo mode.
+
+[[step]]
+action = "press_key"
+value = 119
+
+[[step]]
+action = "expect_log"
+contains = "photo_mode: HUD hidden"
+timeout = 5
+
+[[step]]
+action = "press_key"
+value = 119
+
+[[step]]
+action = "press_key"
+value = 118
+
+[[step]]
+action = "expect_log"
+contains = "photo_mode: photo mode on at"
+timeout = 5
+
+[[step]]
+action = "expect_frames_advance"
+value = 4
+min = 40
+
+[[step]]
+action = "press_key"
+value = 118
+
+[[step]]
+action = "expect_log"
+contains = "photo_mode: photo mode off"
+timeout = 5
+
+# Time, weather, police, frame rate, raw mouse.
+
+[[step]]
+action = "set_setting"
+name = "time_weather"
+id = "set_hour"
+contains = "12"
+
+[[step]]
+action = "expect_log"
+contains = "time_weather: clock set to 12:00"
+timeout = 5
+
+[[step]]
+action = "set_setting"
+name = "time_weather"
+id = "weather"
+contains = "sunny"
+
+[[step]]
+action = "expect_log"
+contains = "time_weather: weather locked to sunny"
+timeout = 5
+
+[[step]]
+action = "set_setting"
+name = "police"
+id = "no_heli_shots"
+contains = "true"
+
+[[step]]
+action = "expect_log"
+contains = "police: police helicopter shots off"
+timeout = 5
+
+[[step]]
+action = "set_setting"
+name = "frame_rate"
+id = "fps"
+contains = "50"
+
+[[step]]
+action = "expect_log"
+contains = "frame_rate: frame limit 50 FPS"
+timeout = 5
+
+[[step]]
+action = "expect_frames_advance"
+value = 4
+min = 60
+
+[[step]]
+action = "set_setting"
+name = "frame_rate"
+id = "fps"
+contains = "30"
+
+[[step]]
+action = "set_setting"
+name = "mouse_aim"
+id = "raw_input"
+contains = "true"
+
+[[step]]
+action = "expect_log"
+contains = "mouse_aim: raw mouse input registered"
+timeout = 5
+
+# GPS route and waypoint teleport (Unity Station), then the safehouse.
+
+[[step]]
+action = "set_waypoint"
+x = 1800.0
+y = -1850.0
+
+[[step]]
+action = "expect_log"
+contains = "radar: GPS: route to (1800, -1850) with"
+timeout = 5
+
+[[step]]
+action = "press_key"
+value = 113
+
+[[step]]
+action = "expect_log"
+contains = "teleport: teleported to the waypoint"
+timeout = 10
+
+[[step]]
+action = "wait_seconds"
+value = 1
+
+[[step]]
+action = "press_key"
+value = 114
+
+[[step]]
+action = "expect_log"
+contains = "teleport: teleported to safehouse"
+timeout = 10
+
+[[step]]
+action = "expect_frames_advance"
+value = 2
+min = 20
+
+[[step]]
+action = "quit"

@@ -1,0 +1,55 @@
+# Phone call skip: from the story save before House Party's party (story21, made by the story chain) the story
+# runner plays House Party and waits for Tenpenny's call, which unlocks Burning Desire ($1343). cutscene_skip ends
+# the call right after it is answered; the call must still count, or the runner never gets ready for Burning Desire.
+name = "mod_phone_call_skip"
+tier = "full"  # needs the story saves of the story chain
+chain = "story"
+chain_order = 10
+timeout_seconds = 420
+
+[mod_config.cutscene_skip]
+auto_skip = true
+skip_calls = "auto"
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "load_save"
+name = "story21"
+
+[[step]]
+action = "wait_seconds"
+value = 15
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 90
+
+[[step]]
+action = "wait_seconds"
+value = 3
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "run_to"
+contains = "Burning Desire"
+
+[[step]]
+action = "expect_log"
+contains = "cutscene_skip: phone call skipped"
+fail_contains = "mission_pass: Story runner stopped"
+timeout = 300
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: Ready for Burning Desire"
+fail_contains = "mission_pass: Story runner stopped"
+timeout = 90
+
+[[step]]
+action = "quit"

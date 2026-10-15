@@ -1,0 +1,50 @@
+# Build output
+/build/
+/out/
+/dist/
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.idb
+*.ipch
+.vs/
+CMakeUserPresets.json
+
+# Binaries produced by the build or copied from game installs
+*.asi
+*.dll
+*.exe
+
+# Game data and extracted assets (never committed)
+*.img
+*.txd
+*.dff
+*.col
+*.ifp
+*.gxt
+*.scm
+*.b
+*.set
+/extracted/
+/test-installs/
+
+# Archived maps and PDBs of built binaries (tools/symbols.py), for crash triage
+/symbols/
+
+# Runtime output
+*.log
+*.dmp
+/runtime-results/
+
+# Downloads of third-party tools (kept outside git)
+/downloads/
+
+# Private developer notes (reverse engineering, plan, task log): never published
+/_devnotes/
+
+# Python
+__pycache__/
+*.pyc
+.venv/

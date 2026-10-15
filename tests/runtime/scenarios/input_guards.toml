@@ -1,0 +1,37 @@
+# R22: F10 / a bare Alt froze the windowed game (Windows keyboard menu loop). R23: the game read Shift typed in
+# other windows while running in the background. Test copies start behind other windows, so every keyboard read the
+# game makes here happens in the background.
+name = "input_guards"
+session = "startup"  # shares one game start with the other start-up checks (tools/run_runtime_tests.py)
+timeout_seconds = 120
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "simulate_menu_key"
+
+[[step]]  # without the fix the game sits in the menu loop and presents no frames
+action = "expect_frames_advance"
+value = 5
+min = 100
+
+[[step]]
+action = "expect_log"
+contains = "keyboard menu activation (F10 / Alt) ignored"
+timeout = 1
+
+[[step]]
+action = "expect_patch"
+id = "engine.key_guard_state"
+state = "installed"
+
+[[step]]
+action = "expect_log"
+contains = "keyboard read while in the background answered as 'not pressed'"
+timeout = 5
+
+[[step]]
+action = "quit"

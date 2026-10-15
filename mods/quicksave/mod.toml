@@ -1,0 +1,42 @@
+id = "quicksave"
+name = "Quick save"
+version = "1.0.0"
+author = "SACore"
+description = "Quick save and quick load by key, in their own rotating save files next to the 8 menu slots"
+api_version = 1
+min_core_version = "1.1.2"
+dll = "quicksave.dll"
+
+[config.enabled]
+default = true
+description = "Quick save and quick load keys active"
+
+[config.quick_save_key]
+default = 116
+min = 1
+max = 254
+description = "Windows key code for quick save (116 = F5)"
+
+[config.quick_load_key]
+default = 120
+min = 1
+max = 254
+description = "Windows key code for quick load, pressed twice within 3 s (120 = F9)"
+
+[config.slots]
+default = 3
+min = 1
+max = 9
+description = "Number of rotating quick save files (GTASAqs1.b ...)"
+
+[config.allow_in_vehicle]
+default = false
+description = "Allow quick saves in a vehicle (the vehicle is not saved; you reload on foot at that spot)"
+
+[config.allow_when_wanted]
+default = true
+description = "Allow quick saves while the police is after you (the wanted level is saved)"
+
+[config.show_messages]
+default = true
+description = "Show confirmations in the game's help box"

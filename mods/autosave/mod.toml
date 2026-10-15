@@ -1,0 +1,36 @@
+id = "autosave"
+name = "Autosave"
+version = "1.0.0"
+author = "SACore"
+description = "Saves automatically after every passed mission and optionally on a timer, in its own rotating save files"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "autosave.dll"
+
+[config.enabled]
+default = true
+description = "Autosave active"
+
+[config.after_mission]
+default = true
+description = "Save once the game is back in free roam after MISSION PASSED"
+
+[config.interval_minutes]
+default = 0
+min = 0
+max = 120
+description = "Also save every N minutes of free roam (0 = off)"
+
+[config.slots]
+default = 3
+min = 1
+max = 9
+description = "Number of rotating autosave files (GTASAas1.b ...)"
+
+[config.allow_in_vehicle]
+default = false
+description = "Allow autosaves in a vehicle (the vehicle is not saved; you reload on foot at that spot)"
+
+[config.show_messages]
+default = true
+description = "Show a confirmation in the game's help box"

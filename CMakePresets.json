@@ -1,0 +1,16 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "x86",
+      "displayName": "Win32 (x86), Visual Studio 2026",
+      "generator": "Visual Studio 18 2026",
+      "architecture": "Win32",
+      "binaryDir": "${sourceDir}/build/x86"
+    }
+  ],
+  "buildPresets": [
+    { "name": "x86-release", "configurePreset": "x86", "configuration": "Release" },
+    { "name": "x86-debug", "configurePreset": "x86", "configuration": "Debug" }
+  ]
+}

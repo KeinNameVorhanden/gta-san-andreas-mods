@@ -1,0 +1,77 @@
+# Soak test: about 9 minutes of play time with a save every 2 minutes; the runner reports memory growth.
+name = "soak"
+tier = "full"  # long: run with --tier full (story runner changes, releases)
+timeout_seconds = 720
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "wait_player"
+field = "area"
+min = 0
+max = 0
+timeout = 90
+
+[[step]]
+action = "wait_seconds"
+value = 120
+
+[[step]]
+action = "save_slot"
+value = 6
+
+[[step]]
+action = "expect_save_valid"
+value = 6
+
+[[step]]
+action = "wait_seconds"
+value = 120
+
+[[step]]
+action = "save_slot"
+value = 6
+
+[[step]]
+action = "expect_save_valid"
+value = 6
+
+[[step]]
+action = "wait_seconds"
+value = 120
+
+[[step]]
+action = "save_slot"
+value = 6
+
+[[step]]
+action = "expect_save_valid"
+value = 6
+
+[[step]]
+action = "simulate_focus_loss"
+
+[[step]]
+action = "expect_frames_advance"
+value = 120
+min = 2400
+
+[[step]]
+action = "save_slot"
+value = 6
+
+[[step]]
+action = "expect_save_valid"
+value = 6
+
+[[step]]
+action = "expect_player"
+field = "health"
+min = 1
+max = 200
+
+[[step]]
+action = "quit"

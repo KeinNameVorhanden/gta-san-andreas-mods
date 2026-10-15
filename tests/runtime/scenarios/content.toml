@@ -1,0 +1,38 @@
+# Content overrides: two content-only mods replace stream.ini; the later one in load order wins.
+name = "content"
+session = "startup"  # shares one game start with the other start-up checks (tools/run_runtime_tests.py)
+timeout_seconds = 120
+
+[[step]]
+action = "expect_log"
+contains = "test_content_b: running (Test: content override B 1.0.0, content only)"
+timeout = 5
+
+[[step]]
+action = "expect_log"
+contains = "stream.ini: test_content_b overrides test_content_a (load order)"
+timeout = 1
+
+[[step]]
+action = "expect_patch"
+id = "content.file_overrides"
+state = "installed"
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_log"
+contains = "content: stream.ini -> "
+timeout = 5
+
+[[step]]
+action = "expect_player"
+field = "health"
+min = 1
+max = 200
+
+[[step]]
+action = "quit"

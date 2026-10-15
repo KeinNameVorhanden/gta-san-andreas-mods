@@ -1,0 +1,5 @@
+id = "test_debug_abi"
+name = "Test: Debug-built mod in a Release core"
+version = "1.0.0"
+api_version = 1
+dll = "test_debug_abi.dll"

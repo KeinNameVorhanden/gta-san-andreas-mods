@@ -1,0 +1,30 @@
+id = "wheel"
+name = "Weapon and radio wheel"
+version = "1.0.0"
+author = "SACore"
+description = "Hold a key for a weapon wheel on foot or a radio wheel in vehicles, with slow motion"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "wheel.dll"
+
+[config.enabled]
+default = true
+description = "Wheel active"
+
+[config.wheel_key]
+default = 20
+min = 1
+max = 254
+description = "Windows key code to hold for the wheel (20 = Caps Lock); move the mouse toward an entry and release"
+
+[config.slow_motion]
+default = 0.25
+min = 0.05
+max = 1.0
+description = "Game speed while the wheel is open (1 = no slow motion)"
+
+[config.size]
+default = 1.0
+min = 0.5
+max = 2.0
+description = "Wheel size"

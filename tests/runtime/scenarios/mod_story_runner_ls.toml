@@ -1,0 +1,51 @@
+# Story runner, one chunk of the whole story: Los Santos from a new game: every mission up to The Green Sabre, including Los Sepulcros (respect), the lowrider meeting (a Voodoo is spawned at the marker) and the High Stakes race (won through Rockstar's race skip, which puts CJ on each checkpoint).
+# Starts from a new game, stops next to the marker of 'Badlands' and saves that point into slot6 for the
+# next chunk. Phone calls are answered by the runner. Fails at once when the runner stops early.
+name = "mod_story_runner_ls"
+tier = "full"  # long: run with --tier full (story runner changes, releases)
+chain = "story"  # each chunk starts from the save the one before made: one copy, in order
+chain_order = 1
+timeout_seconds = 2100
+
+[mod_config.mission_pass]
+load_story_saves = false  # play every mission (the chunk also writes the story saves on the way)
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "wait_seconds"
+value = 3
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "save_to"
+contains = "slot6"
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "run_to"
+contains = "Badlands"
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: Ready for Badlands: saved to slot6."
+fail_contains = "mission_pass: Story runner stopped"
+timeout = 1800
+
+[[step]]
+action = "expect_save_valid"
+name = "slot6"
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "save_to"
+contains = "off"
+
+[[step]]
+action = "quit"

@@ -1,0 +1,5 @@
+id = "test_event_crash"
+name = "Test: crashes in an event handler"
+version = "1.0.0"
+api_version = 1
+dll = "test_event_crash.dll"

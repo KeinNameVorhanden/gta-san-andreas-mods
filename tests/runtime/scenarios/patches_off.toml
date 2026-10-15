@@ -1,0 +1,40 @@
+# Patches can be switched off one by one; the game still reaches gameplay without them.
+name = "patches_off"
+timeout_seconds = 120
+
+[config.patches]
+disabled = "game.save_events,game.load_events,stability.log_message_boxes"
+
+[[step]]
+action = "expect_patch"
+id = "game.save_events"
+state = "disabled"
+
+[[step]]
+action = "expect_patch"
+id = "game.load_events"
+state = "disabled"
+
+[[step]]
+action = "expect_patch"
+id = "stability.log_message_boxes"
+state = "disabled"
+
+[[step]]
+action = "expect_patch"
+id = "engine.present"
+state = "installed"
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_player"
+field = "health"
+min = 1
+max = 200
+
+[[step]]
+action = "quit"

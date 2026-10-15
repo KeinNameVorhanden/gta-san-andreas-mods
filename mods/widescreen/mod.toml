@@ -1,0 +1,22 @@
+id = "widescreen"
+name = "Widescreen FOV"
+version = "1.0.0"
+author = "SACore"
+description = "Hor+ field of view on wide screens, optional extra FOV"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "widescreen.dll"
+
+[config.enabled]
+default = true
+description = "Field of view fix active"
+
+[config.hor_plus]
+default = true
+description = "Wider view on wide screens (the game keeps the 4:3 horizontal view and cuts the top and bottom)"
+
+[config.extra_fov]
+default = 0.0
+min = 0.0
+max = 20.0
+description = "Extra degrees of field of view on top"

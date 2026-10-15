@@ -1,0 +1,7 @@
+id = "test_needs_fail"
+name = "Test: depends on the failing mod"
+version = "1.0.0"
+api_version = 1
+dll = "test_needs_fail.dll"
+[dependencies]
+test_fail = ">=1.0"

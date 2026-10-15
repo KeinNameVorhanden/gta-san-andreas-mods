@@ -1,0 +1,34 @@
+id = "world_density"
+name = "Density and draw distance"
+version = "1.0.0"
+author = "SACore"
+description = "Pedestrian and traffic density, draw distance beyond the menu slider"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "world_density.dll"
+
+[config.enabled]
+default = true
+description = "Density and draw distance settings active"
+
+[config.ped_density]
+default = 1.0
+min = 0.0
+max = 3.0
+description = "Pedestrian density (1 = game default; above 2 the game's limits are reached)"
+
+[config.traffic_density]
+default = 1.0
+min = 0.0
+max = 3.0
+description = "Traffic density (1 = game default)"
+
+[config.draw_distance]
+default = 0.0
+min = 0.0
+max = 3.0
+description = "Draw distance scale (0 = the menu slider; the slider goes up to 1.8)"
+
+[config.respect_missions]
+default = true
+description = "Missions keep the density they set themselves"

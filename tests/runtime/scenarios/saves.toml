@@ -1,0 +1,91 @@
+# Save features: separate User Files folder, save through the game's routine, validation, backups,
+# save events, slot tracking and mod side-car data.
+name = "saves"
+timeout_seconds = 200
+expect_log_after_exit = ["mod(s) stored for slot 8"]  # how many mods store data depends on timing
+
+[config.saves]
+separate_user_files = true
+
+[[step]]
+action = "expect_log"
+contains = "(separate for this install)"
+timeout = 5
+
+[[step]]  # R21: settings and gallery follow the separate folder too
+action = "expect_patch"
+id = "saves.user_files_folder"
+state = "installed"
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]  # intro cutscene runs in world area 14; wait for free roam
+action = "wait_player"
+field = "area"
+min = 0
+max = 0
+timeout = 90
+
+[[step]]
+action = "save_slot"
+value = 8
+
+[[step]]
+action = "expect_save_valid"
+value = 8
+
+[[step]]
+action = "expect_log"
+contains = "game: SaveStarted"
+timeout = 2
+
+[[step]]
+action = "expect_log"
+contains = "slot 8 saved: valid"
+timeout = 2
+
+[[step]]
+action = "expect_log"
+contains = "test_api: api: save completed 1 in slot 8"
+timeout = 2
+
+[[step]]
+action = "wait_seconds"
+value = 2
+
+[[step]]
+action = "save_slot"
+value = 8
+
+[[step]]
+action = "expect_log"
+contains = "slot 8 backed up (before save)"
+timeout = 2
+
+[[step]]  # quick saves have their own files (GTASAqsN.b); a failed redirect would leave quick1 missing
+action = "save_slot"
+name = "quick1"
+
+[[step]]
+action = "expect_save_valid"
+name = "quick1"
+
+[[step]]
+action = "expect_log"
+contains = "quick1 saved: valid"
+timeout = 2
+
+[[step]]  # quick saves skip the safe-house steps: the game clock does not jump 6 hours
+action = "expect_log"
+contains = "quick1: no time skip"
+timeout = 1
+
+[[step]]  # the menu slot written before is still the same valid save
+action = "expect_save_valid"
+value = 8
+
+[[step]]
+action = "quit"

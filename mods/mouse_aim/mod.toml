@@ -1,0 +1,42 @@
+id = "mouse_aim"
+name = "Mouse and aim"
+version = "1.0.0"
+author = "SACore"
+description = "Separate aim sensitivity, per-axis invert and raw mouse input"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "mouse_aim.dll"
+
+[config.enabled]
+default = true
+description = "Mouse settings active"
+
+[config.look_sensitivity]
+default = 1.0
+min = 0.1
+max = 5.0
+description = "Camera sensitivity while not aiming (on top of the game's own mouse slider)"
+
+[config.aim_sensitivity]
+default = 1.0
+min = 0.1
+max = 5.0
+description = "Sensitivity while the aim button is held"
+
+[config.aim_button]
+default = 2
+min = 1
+max = 254
+description = "Windows key code of the aim button (2 = right mouse button)"
+
+[config.invert_x]
+default = false
+description = "Invert the horizontal mouse axis"
+
+[config.invert_y]
+default = false
+description = "Invert the vertical mouse axis"
+
+[config.raw_input]
+default = false
+description = "Use raw mouse input from Windows (no acceleration, no frame rate dependent smoothing)"

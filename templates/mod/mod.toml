@@ -1,0 +1,13 @@
+id = "{{ID}}"
+name = "{{NAME}}"
+version = "0.1.0"
+author = "{{AUTHOR}}"
+description = "{{DESCRIPTION}}"
+api_version = 1
+min_core_version = "{{CORE_VERSION}}"
+dll = "{{ID}}.dll"
+{{TARGET_BUILDS}}
+# Settings appear in sacore\config\mods\{{ID}}.toml with these defaults.
+[config.enabled]
+default = true
+description = "Switch the mod's behaviour on or off"

@@ -1,0 +1,57 @@
+# An install made by the release installer (no test mods needed) reaches gameplay, saves, and closes cleanly.
+# The overrides keep a play copy quiet and away from the user's Documents during the test; they are restored after.
+name = "install_check"
+timeout_seconds = 150
+expect_log_after_exit = ["shutdown complete"]  # shutdown reached the mods
+
+[config.window]
+focus_on_start = false
+
+[config.audio]
+start_muted = true
+
+[config.saves]
+separate_user_files = true
+
+[config.testing]
+auto_start_new_game = true
+
+[[step]]
+action = "wait_state"
+value = 7
+timeout = 30
+
+[[step]]
+action = "expect_window_caption"
+
+[[step]]
+action = "expect_capability"
+id = "player.read"
+state = "supported"
+
+[[step]]
+action = "expect_log"
+contains = "devtools: "
+timeout = 1
+
+[[step]]
+action = "expect_log"
+contains = "session_stats: "
+timeout = 1
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "save_slot"
+value = 8
+
+[[step]]
+action = "expect_save_valid"
+value = 8
+
+[[step]]
+action = "quit"
+

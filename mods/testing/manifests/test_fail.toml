@@ -1,0 +1,5 @@
+id = "test_fail"
+name = "Test: refuses to start"
+version = "1.0.0"
+api_version = 1
+dll = "test_fail.dll"

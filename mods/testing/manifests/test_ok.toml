@@ -1,0 +1,6 @@
+id = "test_ok"
+name = "Test: starts normally"
+version = "1.0.0"
+api_version = 1
+dll = "test_ok.dll"
+load_after = ["test_crash"]

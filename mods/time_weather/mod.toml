@@ -1,0 +1,43 @@
+id = "time_weather"
+name = "Time and weather"
+version = "1.0.0"
+author = "SACore"
+description = "Freeze or speed up the clock, set the hour, lock the weather"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "time_weather.dll"
+
+[config.enabled]
+default = true
+description = "Time and weather controls active"
+
+[config.freeze_time]
+default = false
+description = "Stop the game clock"
+
+[config.time_speed]
+default = 1.0
+min = 0.1
+max = 10.0
+description = "Game clock speed (1 = normal: one game minute per second)"
+
+[config.set_hour]
+default = -1
+min = -1
+max = 23
+description = "Set the clock to this hour now (the setting returns to -1 afterwards)"
+
+[config.hour_key]
+default = 107
+min = 1
+max = 254
+description = "Windows key code that moves the clock one hour forward (107 = numpad +)"
+
+[config.weather]
+default = "cycle"
+allowed = ["cycle", "extra sunny", "sunny", "smog", "cloudy", "rain", "thunderstorm", "fog", "sandstorm"]
+description = "Lock the weather (cycle = the game's normal weather)"
+
+[config.yield_in_missions]
+default = true
+description = "Leave time and weather to the mission while one runs"

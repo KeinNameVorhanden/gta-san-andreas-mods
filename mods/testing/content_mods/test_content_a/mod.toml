@@ -1,0 +1,4 @@
+id = "test_content_a"
+name = "Test: content override A"
+version = "1.0.0"
+api_version = 1

@@ -1,0 +1,28 @@
+id = "trip_skip"
+name = "Trip skip"
+version = "1.0.0"
+author = "SACore"
+description = "Offers the game's own trip skip on long drives to a mission destination"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "trip_skip.dll"
+
+[config.enabled]
+default = true
+description = "Offer trip skips during missions"
+
+[config.min_distance]
+default = 400
+min = 100
+max = 3000
+description = "Offer the skip only when the destination is at least this many metres away"
+
+[config.stop_before]
+default = 40
+min = 10
+max = 150
+description = "Metres before the destination where the skip ends (so the mission's own arrival still happens)"
+
+[config.only_when_not_wanted]
+default = true
+description = "No skip while the police is after CJ (chases)"

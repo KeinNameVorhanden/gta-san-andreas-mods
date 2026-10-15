@@ -1,0 +1,40 @@
+id = "photo_mode"
+name = "HUD toggle and photo mode"
+version = "1.0.0"
+author = "SACore"
+description = "Hide the HUD with one key; photo mode freezes the world and frees the camera"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "photo_mode.dll"
+
+[config.enabled]
+default = true
+description = "Keys active"
+
+[config.hud_key]
+default = 119
+min = 1
+max = 254
+description = "Windows key code that hides or shows the HUD (119 = F8)"
+
+[config.photo_key]
+default = 118
+min = 1
+max = 254
+description = "Windows key code that enters or leaves photo mode (118 = F7). In photo mode: W A S D move, Q E down and up, mouse looks, Shift is faster"
+
+[config.freeze_world]
+default = true
+description = "Photo mode slows the world almost to a stop"
+
+[config.camera_speed]
+default = 8.0
+min = 1.0
+max = 60.0
+description = "Free camera speed in metres per second (Shift: 4 times)"
+
+[config.mouse_sensitivity]
+default = 1.0
+min = 0.1
+max = 5.0
+description = "Free camera mouse sensitivity"

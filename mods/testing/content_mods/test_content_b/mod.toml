@@ -1,0 +1,5 @@
+id = "test_content_b"
+name = "Test: content override B"
+version = "1.0.0"
+api_version = 1
+load_after = ["test_content_a"]

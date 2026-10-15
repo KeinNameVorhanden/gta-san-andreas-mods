@@ -1,0 +1,30 @@
+id = "frame_rate"
+name = "Frame rate"
+version = "1.1.0"
+author = "SACore"
+description = "Choose the frame limit up to 60 FPS, with high frame rate fixes"
+api_version = 1
+min_core_version = "1.2.28"
+dll = "frame_rate.dll"
+
+[config.enabled]
+default = true
+description = "Frame rate settings active"
+
+[config.fps]
+default = 30
+min = 25
+max = 60
+description = "Frame limit while the game's Frame Limiter option is on (30 = game default)"
+
+[config.mini_games_at_30]
+default = true
+description = "Lower the frame rate where scripts break above 30 FPS: pool, dates, gyms, Fender Ketchup (30), crack den in Just Business (50)"
+
+[config.wheel_spin_fix]
+default = true
+description = "Wheels of trains and trams spin at the right speed at any frame rate"
+
+[config.physics_fixes]
+default = true
+description = "Physics and timing fixes for frame rates above 30: swimming, diving, doors, buoyancy, boats, Skimmer, burnout, coasting, siren, heli rotors, pushing cars, climbing, vehicle turning, water cannon, AI cars"

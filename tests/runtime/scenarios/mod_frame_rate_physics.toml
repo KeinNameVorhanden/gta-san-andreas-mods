@@ -1,0 +1,120 @@
+# High frame rate correctness: the same swim is measured at 30 and at 60 FPS. Without the frame_rate mod's
+# fixes the game moves the swimmer per frame, not per time, so the distance differs; with them both must agree.
+# Start: the story save in slot 7 (made by mod_story_runner); open sea south of Santa Maria Beach.
+name = "mod_frame_rate_physics"
+timeout_seconds = 300
+
+[mod_config.cutscene_skip]
+auto_skip = true
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission started: 2 'In the Beginning'"
+timeout = 30
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "wait_seconds"
+value = 0.4
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission 'In the Beginning' ended without MISSION PASSED via pass code"
+timeout = 20
+
+[[step]]
+action = "wait_seconds"
+value = 1
+
+# 30 FPS
+
+[[step]]
+action = "set_setting"
+name = "frame_rate"
+id = "fps"
+contains = "30"
+
+[[step]]
+action = "teleport"
+x = 600.0
+y = -2600.0
+z = 1.0
+
+[[step]]
+action = "wait_seconds"
+value = 3
+
+[[step]]
+action = "mark_position"
+
+[[step]]
+action = "hold_key"
+value = 87
+seconds = 6
+
+[[step]]
+action = "expect_distance"
+min = 2.0
+max = 200.0
+
+# 60 FPS
+
+[[step]]
+action = "set_setting"
+name = "frame_rate"
+id = "fps"
+contains = "60"
+
+[[step]]
+action = "expect_frames_advance"
+value = 2
+min = 100
+
+[[step]]
+action = "teleport"
+x = 600.0
+y = -2600.0
+z = 1.0
+
+[[step]]
+action = "wait_seconds"
+value = 3
+
+[[step]]
+action = "mark_position"
+
+[[step]]
+action = "hold_key"
+value = 87
+seconds = 6
+
+[[step]]
+action = "expect_distance"
+min = 2.0
+max = 200.0
+
+[[step]]
+action = "expect_ratio"
+min = 0.9
+max = 1.1
+
+[[step]]
+action = "set_setting"
+name = "frame_rate"
+id = "fps"
+contains = "30"
+
+[[step]]
+action = "quit"

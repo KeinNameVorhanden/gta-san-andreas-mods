@@ -1,0 +1,59 @@
+# Story runner, last chunk: from the save in slot1 (made by mod_story_runner_finale, CJ next to Sweet's marker)
+# the runner plays End of the Line (its first two parts through Rockstar's own S targets, the third through its pass
+# code) and the credits, and stops in free roam with the story done.
+name = "mod_story_runner_end"
+tier = "full"  # long: run with --tier full (story runner changes, releases)
+chain = "story"  # each chunk starts from the save the one before made: one copy, in order
+chain_order = 7
+timeout_seconds = 1500
+
+[mod_config.mission_pass]
+load_story_saves = false
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "load_save"
+name = "slot1"
+
+[[step]]
+action = "wait_seconds"
+value = 15
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 90
+
+[[step]]
+action = "wait_seconds"
+value = 3
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "save_to"
+contains = "off"
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "run_to"
+contains = "Story complete"
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: Ready for Story complete: the story is done."
+fail_contains = "mission_pass: Story runner stopped"
+timeout = 1200
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission passed: 'End Of The Line'"
+timeout = 5
+
+[[step]]
+action = "quit"

@@ -1,0 +1,5 @@
+id = "test_crash"
+name = "Test: crashes in main"
+version = "1.0.0"
+api_version = 1
+dll = "test_crash.dll"

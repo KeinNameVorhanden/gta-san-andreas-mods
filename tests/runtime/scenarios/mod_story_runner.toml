@@ -1,0 +1,71 @@
+# Story runner: from a new game, run_to plays through In the Beginning, Big Smoke, the save tutorial and
+# Ryder through the game's own triggers, stops next to the marker of the chosen mission and saves that story point
+# into menu slot 7 (save_to); the save then loads like any other.
+name = "mod_story_runner"
+timeout_seconds = 480
+
+[mod_config.mission_pass]
+load_story_saves = false
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "wait_seconds"
+value = 3
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "save_to"
+contains = "slot7"
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "run_to"
+contains = "Tagging up Turf"
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: story: stopped next to the marker of 'Tagging up Turf'"
+timeout = 330
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: Ready for Tagging up Turf: saved to slot7."
+timeout = 30
+
+[[step]]
+action = "expect_save_valid"
+name = "slot7"
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "save_to"
+contains = "off"
+
+[[step]]
+action = "load_save"
+name = "slot7"
+
+[[step]]
+action = "expect_log"
+contains = "saves: loading slot7"
+timeout = 10
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 90
+
+[[step]]
+action = "expect_frames_advance"
+value = 5
+min = 50
+
+[[step]]
+action = "quit"

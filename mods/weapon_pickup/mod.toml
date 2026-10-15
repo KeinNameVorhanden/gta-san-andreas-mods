@@ -1,0 +1,18 @@
+id = "weapon_pickup"
+name = "Weapon pickup by key"
+version = "1.0.0"
+author = "SACore"
+description = "Weapons on the ground are only picked up when you press a key"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "weapon_pickup.dll"
+
+[config.enabled]
+default = true
+description = "Weapons only by key"
+
+[config.pickup_key]
+default = 0
+min = 0
+max = 254
+description = "Extra Windows key code that picks up a weapon while held (0 = only the game's own pickup control)"

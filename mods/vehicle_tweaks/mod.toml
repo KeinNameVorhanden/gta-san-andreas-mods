@@ -1,0 +1,22 @@
+id = "vehicle_tweaks"
+name = "Vehicle tweaks"
+version = "1.0.0"
+author = "SACore"
+description = "No damage on the roof, steering that returns to centre with mouse steering"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "vehicle_tweaks.dll"
+
+[config.enabled]
+default = true
+description = "Vehicle tweaks active"
+
+[config.no_upside_down_damage]
+default = true
+description = "Cars lying on their roof no longer burn and explode"
+
+[config.mouse_steering_recenter]
+default = 0.15
+min = 0.0
+max = 1.0
+description = "With mouse steering on: how fast the wheels return to centre when the mouse rests (0 = game behaviour)"

@@ -1,0 +1,36 @@
+# Cutscene skip mod, key path and control: without auto_skip the opening cutscene keeps running until the
+# skip key (Enter) is pressed; the log then shows a length of several seconds and "(skipped)".
+name = "mod_cutscene_skip_key"
+timeout_seconds = 150
+
+[mod_config.cutscene_skip]
+auto_skip = false
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "wait_player"
+field = "cutscene"
+min = 1
+max = 1
+timeout = 30
+
+[[step]]
+action = "press_key"
+value = 13
+
+[[step]]
+action = "expect_log"
+contains = "(skipped)"
+timeout = 10
+
+[[step]]
+action = "expect_frames_advance"
+value = 2
+min = 20
+
+[[step]]
+action = "quit"

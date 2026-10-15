@@ -1,0 +1,46 @@
+# Failure test: core.toml with wrong types, out-of-range values and unknown keys.
+# Each bad key must fall back to its default on its own; every valid key (windowed, testing flags) keeps working.
+# An unparsable file is covered by the unit tests only: it resets every key, including focus_on_start, and the
+# game would take the user's focus during a test run.
+name = "config_values"
+timeout_seconds = 120
+
+[config.window]
+client_width = "very wide"
+
+[config.saves]
+backups_per_slot = 100000
+
+[config.bogus]
+key = 1
+
+[[step]]
+action = "wait_state"
+value = 7
+timeout = 30
+
+[[step]]
+action = "expect_log"
+contains = "'window.client_width' must be"
+timeout = 1
+
+[[step]]
+action = "expect_log"
+contains = "saves.backups_per_slot"
+timeout = 1
+
+[[step]]
+action = "expect_log"
+contains = "unknown setting 'bogus.key' (kept, not used)"
+timeout = 1
+
+[[step]]
+action = "expect_window_caption"
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "quit"

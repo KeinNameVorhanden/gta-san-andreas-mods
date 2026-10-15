@@ -1,0 +1,28 @@
+id = "teleport"
+name = "Waypoint teleport and fast travel"
+version = "1.0.0"
+author = "SACore"
+description = "Teleport to the map waypoint, fast travel between your safehouses"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "teleport.dll"
+
+[config.enabled]
+default = true
+description = "Teleport keys active"
+
+[config.waypoint_key]
+default = 113
+min = 1
+max = 254
+description = "Windows key code that teleports to the waypoint set on the map (113 = F2)"
+
+[config.fast_travel_key]
+default = 114
+min = 1
+max = 254
+description = "Windows key code that travels to the next safehouse you own (114 = F3)"
+
+[config.allow_during_missions]
+default = false
+description = "Allow teleports while a mission runs (can break mission scripts)"

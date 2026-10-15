@@ -1,0 +1,42 @@
+id = "stat_boost"
+name = "Stat boost"
+version = "1.0.0"
+author = "SACore"
+description = "Faster stamina, muscle, lung, driving and weapon skill gains"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "stat_boost.dll"
+
+[config.enabled]
+default = true
+description = "Multipliers active"
+
+[config.body]
+default = 3.0
+min = 0.0
+max = 20.0
+description = "Stamina, muscle and lung capacity gains"
+
+[config.vehicles]
+default = 3.0
+min = 0.0
+max = 20.0
+description = "Driving, flying, motorbike and cycling skill gains"
+
+[config.weapons]
+default = 3.0
+min = 0.0
+max = 20.0
+description = "Weapon skill gains (pistol to rifle)"
+
+[config.fat_gain]
+default = 1.0
+min = 0.0
+max = 20.0
+description = "Fat gained from eating"
+
+[config.fat_loss]
+default = 1.0
+min = 0.0
+max = 20.0
+description = "Fat burned by exercise"

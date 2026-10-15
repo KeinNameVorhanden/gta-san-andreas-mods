@@ -1,0 +1,33 @@
+id = "devtools"
+name = "SACore developer console"
+version = "1.0.0"
+author = "SACore"
+description = "In-game overlay: game state, player, mods, capabilities, config, log, crashes, performance, patches, test commands."
+api_version = 1
+min_core_version = "0.5.0"
+dll = "devtools.dll"
+
+[config.toggle_f_key]
+default = 11
+min = 1
+max = 12
+description = "Function key that opens and closes the console (11 = F11)"
+
+[config.view]
+default = "advanced"
+allowed = ["beginner", "advanced", "expert"]
+description = "beginner: overview and player; advanced: plus mods, capabilities, config, log, crashes, performance; expert: plus patches and test commands"
+
+[config.open_on_start]
+default = false
+description = "Show the console as soon as the game starts"
+
+[config.self_test]
+default = false
+description = "TEST ONLY: open the console at start, draw every tab once, log the result, close it"
+
+[config.ui_scale]
+default = 1.0
+min = 0.5
+max = 2.0
+description = "Size of the console relative to the game resolution (1.0 = scaled to the picture height)"

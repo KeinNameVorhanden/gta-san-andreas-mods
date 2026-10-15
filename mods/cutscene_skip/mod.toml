@@ -1,0 +1,31 @@
+id = "cutscene_skip"
+name = "Cutscene skip"
+version = "1.1.0"
+author = "SACore"
+description = "Skip cutscenes, skippable scripted scenes and phone calls by key or automatically (also the intro of a new game)"
+api_version = 1
+min_core_version = "1.1.4"
+dll = "cutscene_skip.dll"
+
+[config.enabled]
+default = true
+description = "Cutscene skip active"
+
+[config.skip_key]
+default = 13
+min = 1
+max = 254
+description = "Windows key code that skips the current cutscene (13 = Enter)"
+
+[config.auto_skip]
+default = false
+description = "Skip every cutscene automatically (story scenes included)"
+
+[config.skip_calls]
+default = "key"
+allowed = ["off", "key", "auto"]
+description = "Phone calls: key = the skip key ends the call, auto = every call ends right after it is answered; the call still counts for the story (new missions, unlocks)"
+
+[config.answer_calls]
+default = false
+description = "Answer the phone automatically when it rings (not during missions)"

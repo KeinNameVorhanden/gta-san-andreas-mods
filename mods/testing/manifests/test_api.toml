@@ -1,0 +1,20 @@
+id = "test_api"
+name = "Test: public API"
+version = "1.2.0"
+api_version = 1
+min_core_version = "0.5.0"
+dll = "test_api.dll"
+
+[config.speed]
+default = 2.5
+description = "Example number setting"
+min = 0.5
+max = 10
+
+[config.label]
+default = "hello"
+description = "Example string setting"
+
+[config.enabled]
+default = true
+description = "Example switch"

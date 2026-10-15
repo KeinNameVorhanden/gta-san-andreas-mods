@@ -1,0 +1,72 @@
+# Public mod API: config, capabilities, hooks through the patch manager, events, player access,
+# crash isolation in event handlers, API version gate, Debug-built mod in a Release core, shutdown event.
+name = "mod_api"
+session = "startup"  # shares one game start with the other start-up checks (tools/run_runtime_tests.py)
+timeout_seconds = 120
+expect_log_after_exit = [
+    "test_api: api: shutdown event after",
+    "test_ok: shutdown callback reached",
+]
+
+[[step]]
+action = "expect_log"
+contains = "test_api: api: config speed = 2.5, label = hello, enabled = true"
+timeout = 10
+
+[[step]]
+action = "expect_log"
+contains = "test_api: api: hook works = true"
+timeout = 1
+
+[[step]]
+action = "expect_patch"
+id = "test_api.self_test"
+state = "installed"
+
+[[step]]
+action = "expect_log"
+contains = "test_api_v2: not loaded: built for mod API 2, this core provides API 1"
+timeout = 1
+
+[[step]]
+action = "expect_log"
+contains = "test_debug_abi: running"
+timeout = 1
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_log"
+contains = "test_api: api: state 8 -> 9"
+timeout = 5
+
+[[step]]  # Live settings validated, stored, listed and announced to the mod
+action = "expect_log"
+contains = "test_api: api: live setting refused out of range true, accepted true, now 4.5, listed true"
+timeout = 5
+
+[[step]]
+action = "expect_log"
+contains = "test_api: api: setting changed: speed"
+timeout = 1
+
+[[step]]
+action = "expect_log"
+contains = "test_api: api: player health"
+timeout = 10
+
+[[step]]
+action = "expect_log"
+contains = "test_event_crash: crashed in an event handler with exception 0xc0000005"
+timeout = 10
+
+[[step]]
+action = "expect_log"
+contains = "test_api: api: frame events received"
+timeout = 30
+
+[[step]]
+action = "quit"

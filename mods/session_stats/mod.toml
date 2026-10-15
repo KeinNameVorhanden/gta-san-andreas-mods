@@ -1,0 +1,23 @@
+id = "session_stats"
+name = "Session stats (SACore example)"
+version = "1.0.0"
+author = "SACore"
+description = "Example mod: session and lifetime statistics (money, distance, idle time), kept with each save"
+api_version = 1
+min_core_version = "0.8.0"
+dll = "session_stats.dll"
+
+# Settings appear in sacore\config\mods\session_stats.toml with these defaults.
+[config.enabled]
+default = true
+description = "Switch the mod on or off"
+
+[config.track_distance]
+default = true
+description = "Add up the distance the player travels"
+
+[config.announce_every_minutes]
+default = 10
+min = 1
+max = 240
+description = "Write a progress line to the log this often"

@@ -1,0 +1,5 @@
+id = "Bad Id"
+name = "Test: invalid manifest"
+version = "1.0.0"
+api_version = 1
+dll = "none.dll"

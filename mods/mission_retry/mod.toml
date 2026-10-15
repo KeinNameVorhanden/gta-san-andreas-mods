@@ -1,0 +1,24 @@
+id = "mission_retry"
+name = "Mission retry"
+version = "1.0.0"
+author = "SACore"
+description = "After a failed mission, one key takes you back to the mission's marker"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "mission_retry.dll"
+
+[config.enabled]
+default = true
+description = "Offer a retry after a failed mission"
+
+[config.retry_key]
+default = 115
+min = 1
+max = 254
+description = "Windows key code that takes CJ back to the mission marker (115 = F4)"
+
+[config.offer_seconds]
+default = 120
+min = 10
+max = 600
+description = "How long the retry stays available after the fail"

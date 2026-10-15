@@ -1,0 +1,96 @@
+# Quick save and quick load: a quick save in its own file is loaded back while playing; the money at the
+# time of the quick save returns, so the game really restarted into that file.
+name = "quick_load"
+timeout_seconds = 300
+
+[mod_config.cutscene_skip]
+auto_skip = true
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]  # the test start money is booked once; wait for it so it cannot land later
+action = "wait_player"
+field = "money"
+min = 5000
+max = 5000
+timeout = 30
+
+# A save made while a mission thread runs cannot be loaded (the game crashes in its first script step), so the
+# opening mission is finished first with the mission pass key (as in mod_quicksave_freeroam).
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission started: 2 'In the Beginning'"
+timeout = 30
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "wait_seconds"
+value = 0.4
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission 'In the Beginning' ended without MISSION PASSED via pass code"
+timeout = 20
+
+[[step]]
+action = "wait_seconds"
+value = 1
+
+[[step]]
+action = "set_money"
+value = 7777
+
+[[step]]
+action = "save_slot"
+name = "quick2"
+timeout = 150
+
+[[step]]
+action = "expect_save_valid"
+name = "quick2"
+
+[[step]]
+action = "set_money"
+value = 1111
+
+[[step]]
+action = "wait_player"
+field = "money"
+min = 1111
+max = 1111
+timeout = 5
+
+[[step]]
+action = "load_save"
+name = "quick2"
+
+[[step]]
+action = "expect_log"
+contains = "loading quick2 (GTASAqs2.b)"
+timeout = 5
+
+[[step]]
+action = "wait_player"
+field = "money"
+min = 7777
+max = 7777
+timeout = 120
+
+[[step]]
+action = "expect_frames_advance"
+value = 2
+min = 20
+
+[[step]]
+action = "quit"

@@ -1,0 +1,5 @@
+id = "test_api_v2"
+name = "Test: built for a future API"
+version = "1.0.0"
+api_version = 2
+dll = "test_api_v2.dll"

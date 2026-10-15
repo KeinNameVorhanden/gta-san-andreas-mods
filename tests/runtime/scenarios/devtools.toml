@@ -1,0 +1,41 @@
+# Developer console: self-test draws every tab once with the console open, then closes it.
+name = "devtools"
+session = "startup"  # shares one game start with the other start-up checks (tools/run_runtime_tests.py)
+timeout_seconds = 120
+
+[mod_config.devtools]
+self_test = true
+view = "expert"
+
+[[step]]
+action = "expect_log"
+contains = "devtools: running"
+timeout = 5
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_log"
+contains = "devtools: self-test drew all 12 tabs"
+timeout = 30
+
+[[step]]  # the console scales with the game resolution and never leaves the picture (640x480 on test copies)
+action = "expect_log"
+contains = "inside the 640x480 picture"
+timeout = 1
+
+[[step]]
+action = "expect_log"
+contains = "game fonts loaded"
+timeout = 1
+
+[[step]]
+action = "expect_frames_advance"
+value = 3
+min = 30
+
+[[step]]
+action = "quit"

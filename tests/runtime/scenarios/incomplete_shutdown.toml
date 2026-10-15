@@ -1,0 +1,44 @@
+# Failure test: the game process is killed (no WM_DESTROY, no shutdown events, no mod shutdown).
+# The runner kills it after kill_after_seconds, requires that no crash report was written, then starts the game
+# again with the [[after_kill_step]] list: the next session must start normally and the save made before the kill
+# must still be valid.
+name = "incomplete_shutdown"
+timeout_seconds = 180
+kill_after_seconds = 45
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "save_slot"
+value = 5
+
+[[step]]
+action = "expect_save_valid"
+value = 5
+
+[[step]]
+action = "wait_seconds"
+value = 600
+
+[[after_kill_step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[after_kill_step]]
+action = "expect_save_valid"
+value = 5
+
+[[after_kill_step]]
+action = "save_slot"
+value = 5
+
+[[after_kill_step]]
+action = "expect_save_valid"
+value = 5
+
+[[after_kill_step]]
+action = "quit"

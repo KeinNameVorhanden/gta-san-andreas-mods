@@ -1,0 +1,42 @@
+# Story saves, fresh game: from a new game (no mission passed) run_to a mission far into the story loads its
+# story save (made by the story chunks with save_each) instead of playing there; CJ is then beside its marker.
+name = "mod_story_saves_fresh"
+tier = "full"  # long: run with --tier full (story runner changes, releases)
+chain = "story"  # each chunk starts from the save the one before made: one copy, in order
+chain_order = 8
+timeout_seconds = 240
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "wait_seconds"
+value = 3
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "run_to"
+contains = "Toreno's Last Flight"
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: story: loading story"
+fail_contains = "mission_pass: Story runner stopped"
+timeout = 10
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: Ready for Toreno's Last Flight: story save loaded."
+fail_contains = "mission_pass: Story runner stopped"
+timeout = 120
+
+[[step]]
+action = "expect_frames_advance"
+value = 5
+min = 50
+
+[[step]]
+action = "quit"

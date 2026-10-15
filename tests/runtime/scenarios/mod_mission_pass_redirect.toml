@@ -1,0 +1,85 @@
+# Mission pass mod, second stage: with the debug skip off, F6 twice sends "Big Smoke" straight into its pass
+# code (IP redirect into the pass chunk, as the engine unwinds a mission on wasted or busted); stat 147 rises, the
+# mission's cleanup runs and the game stays playable. Same route as mod_mission_pass.
+name = "mod_mission_pass_redirect"
+timeout_seconds = 240
+
+[mod_config.cutscene_skip]
+auto_skip = true
+
+[mod_config.mission_pass]
+debug_skip = false
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: ready: pass key F6 (press twice)"
+timeout = 30
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission started: 2 'In the Beginning'"
+timeout = 30
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "wait_seconds"
+value = 0.4
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission 'In the Beginning' ended without MISSION PASSED via pass code"
+timeout = 20
+
+# The Big Smoke marker in Grove Street (globals $459..$461 from INITIAL), on foot.
+
+[[step]]
+action = "wait_seconds"
+value = 1
+
+[[step]]
+action = "teleport"
+x = 2495.214
+y = -1687.03
+z = 12.514
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission started: 11 'Big Smoke'"
+timeout = 30
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "wait_seconds"
+value = 0.4
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission passed: 'Big Smoke' via pass code"
+timeout = 45
+
+[[step]]
+action = "expect_frames_advance"
+value = 2
+min = 20
+
+[[step]]
+action = "quit"

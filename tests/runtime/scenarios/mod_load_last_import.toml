@@ -1,0 +1,41 @@
+# Community save import and load last save: a save file in sacore\import (prepared by the test run:
+# a copy of an autosave) is imported into menu slot 8 through the core path the Saves page uses; without the test
+# auto start the load_last mod then loads the newest save, which is that slot, the way the menu's Load Game does.
+# Prepare: copy a valid save to <game>\sacore\import\test_import.b.
+name = "mod_load_last_import"
+timeout_seconds = 150
+
+[config.testing]
+auto_start_new_game = false
+
+[[step]]
+action = "import_save"
+name = "slot8"
+id = "test_import.b"
+
+[[step]]
+action = "expect_save_valid"
+name = "slot8"
+
+[[step]]
+action = "expect_log"
+contains = "load_last: loading the newest save: slot8"
+timeout = 60
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_log"
+contains = "saves: loading slot8"
+timeout = 5
+
+[[step]]
+action = "expect_frames_advance"
+value = 10
+min = 100
+
+[[step]]
+action = "quit"

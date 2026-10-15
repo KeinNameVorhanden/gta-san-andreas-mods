@@ -1,0 +1,30 @@
+# Cutscene skip mod: with auto_skip the opening cutscene of a new game ends within seconds instead of
+# running its full length (about 2 minutes), and the game reaches the following scripted part normally.
+name = "mod_cutscene_skip"
+timeout_seconds = 150
+
+[mod_config.cutscene_skip]
+auto_skip = true
+
+[[step]]
+action = "expect_log"
+contains = "cutscene_skip: ready: skip key 13, automatic true"
+timeout = 30
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_log"
+contains = "(skipped)"
+timeout = 60
+
+[[step]]
+action = "expect_frames_advance"
+value = 2
+min = 20
+
+[[step]]
+action = "quit"

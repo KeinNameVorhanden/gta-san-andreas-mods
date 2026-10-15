@@ -1,0 +1,61 @@
+# Example mod: config, events, state read, documented patch, save side-car data, shutdown summary.
+name = "example_mod"
+session = "startup"  # shares one game start with the other start-up checks (tools/run_runtime_tests.py)
+timeout_seconds = 150
+expect_log_after_exit = ["session_stats: session summary"]
+
+[[step]]
+action = "expect_log"
+contains = "session_stats: ready on"
+timeout = 5
+
+[[step]]
+action = "expect_patch"
+id = "session_stats.sleep_counter"
+state = "installed"
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_log"
+contains = "session_stats: tracking started"
+timeout = 5
+
+[[step]]
+action = "wait_seconds"
+value = 2
+
+[[step]]
+action = "set_money"
+value = 9000
+
+[[step]]
+action = "wait_seconds"
+value = 2
+
+[[step]]
+action = "wait_player"
+field = "area"
+min = 0
+max = 0
+timeout = 60
+
+[[step]]
+action = "save_slot"
+value = 8
+
+[[step]]
+action = "expect_log"
+contains = "session_stats: saved totals with slot 8"
+timeout = 3
+
+[[step]]
+action = "expect_log"
+contains = "stored for slot 8"
+timeout = 3
+
+[[step]]
+action = "quit"

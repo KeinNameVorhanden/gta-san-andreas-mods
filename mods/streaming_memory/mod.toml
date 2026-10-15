@@ -1,0 +1,39 @@
+id = "streaming_memory"
+name = "Streaming memory"
+version = "1.1.0"
+author = "SACore"
+description = "More memory for streaming models and textures: less pop-in"
+api_version = 1
+min_core_version = "1.3.2"
+dll = "streaming_memory.dll"
+
+[config.enabled]
+default = true
+description = "Raise the streaming budget"
+
+[config.memory_mb]
+default = 256
+min = 50
+max = 2048
+description = "Streaming memory budget in MB (the game uses 50). Above about 600 MB only with the 4 GB flag (tools/laa.py); the preload raises it to at least 1536 by itself"
+
+[config.vehicle_models]
+default = 0
+min = 0
+max = 50
+description = "Vehicle models kept loaded (0 = game default of 22)"
+
+[config.preload_after_load]
+default = true
+description = "Stream the area around CJ completely right after loading a save"
+
+[config.preload]
+default = "auto"
+allowed = ["off", "auto", "world", "everything"]
+description = "Load models and textures once and keep them loaded: world = buildings, objects, interiors and weapons (the pop-in); everything = also vehicles and peds; auto = world when the game has the 4 GB address space, else off"
+
+[config.preload_reserve_mb]
+default = 600
+min = 200
+max = 2000
+description = "Stop preloading when less than this much address space is left in the game process (MB)"

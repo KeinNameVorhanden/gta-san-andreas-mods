@@ -1,0 +1,121 @@
+# Smoke test: startup fixes, windowing, mods, player read/write, background running.
+# Needs [testing] auto_start_new_game = true and give_money_on_start = 5000 in core.toml.
+name = "smoke"
+session = "startup"  # shares one game start with the other start-up checks (tools/run_runtime_tests.py)
+session_order = 1  # first: it checks the fresh game's money
+timeout_seconds = 150
+
+[[step]]  # R1: intro movies skipped, main menu reached quickly
+action = "wait_state"
+value = 7
+timeout = 20
+
+[[step]]  # R2: Device Selection dialog handled by the core (multi-monitor test machine)
+action = "expect_log"
+contains = "Device Selection dialog confirmed automatically"
+timeout = 5
+
+[[step]]  # R4: windowed with a caption
+action = "expect_window_caption"
+
+[[step]]  # R17: the game's own style/geometry changes are absorbed (no frame flicker), window follows the game
+action = "expect_patch"
+id = "engine.window_style_guard"
+state = "installed"
+
+[[step]]
+action = "expect_patch"
+id = "engine.window_geometry_guard"
+state = "installed"
+
+# CdStreamSync race: without the fix a load can freeze for good
+[[step]]
+action = "expect_patch"
+id = "game.cdstream_sync"
+state = "installed"
+
+[[step]]
+action = "expect_log"
+contains = "stream reads are waited for by the CdStreamSync replacement"
+timeout = 30
+
+[[step]]
+action = "expect_log"
+contains = "for game resolution"
+timeout = 1
+
+[[step]]  # R6: crashing test mod isolated, good test mod running
+action = "expect_log"
+contains = "test_crash: crashed in sacore_mod_main"
+timeout = 1
+
+[[step]]
+action = "expect_log"
+contains = "test_ok: running"
+timeout = 1
+
+[[step]]
+action = "expect_capability"
+id = "player.read"
+state = "supported"
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "wait_seconds"
+value = 2
+
+[[step]]
+action = "expect_player"
+field = "health"
+min = 1
+max = 200
+
+[[step]]  # testing.give_money_on_start
+action = "expect_player"
+field = "money"
+min = 5000
+max = 5000
+
+[[step]]
+action = "set_money"
+value = 1234
+
+[[step]]
+action = "wait_seconds"
+value = 1
+
+[[step]]
+action = "expect_player"
+field = "money"
+min = 1234
+max = 1234
+
+[[step]]  # R3: keeps running without focus
+action = "simulate_focus_loss"
+
+[[step]]
+action = "expect_frames_advance"
+value = 5
+min = 60
+
+# Getting the focus back must not pause a game that kept running (WM_SETFOCUS opened the pause menu; test copies
+# paused each other at night when a closing game window passed the focus on)
+[[step]]
+action = "simulate_focus_return"
+
+[[step]]
+action = "wait_seconds"
+value = 1
+
+[[step]]
+action = "expect_player"
+field = "menu"
+min = 0
+max = 0
+
+[[step]]
+action = "quit"

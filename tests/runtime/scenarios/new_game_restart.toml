@@ -1,0 +1,62 @@
+# R19: "Start new game" from the pause menu while playing (user report 2026-10-13: crash on 1.0 US).
+# The restart must go through the game's shutdown-for-restart path: no crash, a fresh game (money back to 0),
+# and saving still works afterwards.
+name = "new_game_restart"
+timeout_seconds = 300
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "wait_player"
+field = "area"
+min = 0
+max = 0
+timeout = 60
+
+[[step]]  # the test start money (give_money_on_start) is booked once; wait for it so it cannot land later
+action = "wait_player"
+field = "money"
+min = 5000
+max = 5000
+timeout = 30
+
+[[step]]
+action = "set_money"
+value = 1234
+
+[[step]]
+action = "wait_player"
+field = "money"
+min = 1234
+max = 1234
+timeout = 5
+
+[[step]]
+action = "start_new_game"
+
+[[step]]
+action = "wait_player"
+field = "money"
+min = 0
+max = 0
+timeout = 60
+
+[[step]]
+action = "expect_frames_advance"
+value = 3
+min = 45
+
+[[step]]  # a real new game plays the intro cutscene (world area 14) first; save_slot waits for free roam
+action = "save_slot"
+value = 8
+timeout = 150
+
+[[step]]
+action = "expect_save_valid"
+value = 8
+
+[[step]]
+action = "quit"

@@ -1,0 +1,22 @@
+id = "load_last"
+name = "Load last save"
+version = "1.0.0"
+author = "SACore"
+description = "Loads the newest save when the game reaches the main menu (hold Shift to stay in the menu)"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "load_last.dll"
+
+[config.enabled]
+default = true
+description = "Load the newest save at start"
+
+[config.include_quick_and_auto]
+default = true
+description = "Also consider quick saves and autosaves (otherwise only the 8 menu slots)"
+
+[config.hold_key]
+default = 16
+min = 1
+max = 254
+description = "Hold this key while the game starts to stay in the main menu (16 = Shift)"

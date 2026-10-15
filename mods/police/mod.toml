@@ -1,0 +1,44 @@
+id = "police"
+name = "Police switches"
+version = "1.0.0"
+author = "SACore"
+description = "Never wanted, wanted cap, faster wanted decay, no police helicopter shots"
+api_version = 1
+min_core_version = "1.2.0"
+dll = "police.dll"
+
+[config.enabled]
+default = true
+description = "Police switches active"
+
+[config.never_wanted]
+default = false
+description = "The police never want CJ (the game's own never-wanted cheat flag)"
+
+[config.max_wanted]
+default = 6
+min = 0
+max = 6
+description = "Highest wanted level in stars (6 = game default)"
+
+[config.faster_decay]
+default = false
+description = "Lose one star every decay_seconds while no police is near"
+
+[config.decay_seconds]
+default = 30
+min = 5
+max = 300
+description = "Seconds per lost star with faster_decay"
+
+[config.no_heli_shots]
+default = false
+description = "Police helicopters do not shoot"
+
+[config.no_police_helis]
+default = false
+description = "No police helicopters at all"
+
+[config.respect_missions]
+default = true
+description = "Missions keep the normal police (some need a wanted level)"

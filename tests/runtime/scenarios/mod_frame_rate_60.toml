@@ -1,0 +1,115 @@
+# High frame rate stability: half a minute at 60 FPS with every physics fix active, in traffic (AI autopilot,
+# collisions, doors), on foot near water (swimming, buoyancy) and back; the game must keep running at about 60 FPS.
+# Start: a new game, the opening mission finished with the mission pass key.
+name = "mod_frame_rate_60"
+timeout_seconds = 300
+
+[mod_config.cutscene_skip]
+auto_skip = true
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission started: 2 'In the Beginning'"
+timeout = 30
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "wait_seconds"
+value = 0.4
+
+[[step]]
+action = "press_key"
+value = 117
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: mission 'In the Beginning' ended without MISSION PASSED via pass code"
+timeout = 20
+
+[[step]]
+action = "wait_seconds"
+value = 1
+
+[[step]]
+action = "set_setting"
+name = "frame_rate"
+id = "fps"
+contains = "60"
+
+[[step]]
+action = "expect_log"
+contains = "frame_rate: high frame rate fixes:"
+timeout = 5
+
+# Busy street in Commerce (traffic, AI cars)
+
+[[step]]
+action = "teleport"
+x = 1450.0
+y = -1740.0
+z = 13.5
+
+[[step]]
+action = "expect_frames_advance"
+value = 10
+min = 500
+
+# Running on the open street in Grove Street, 6 m off Big Smoke's marker (the beach point stood CJ inside a
+# food stand), then the sea.
+# CJ must really move: a stuck CJ keeps the frames coming but covers no distance.
+
+[[step]]
+action = "teleport"
+x = 2501.2
+y = -1687.0
+z = 13.5
+
+[[step]]
+action = "wait_seconds"
+value = 1
+
+[[step]]
+action = "mark_position"
+
+[[step]]
+action = "hold_key"
+value = 87
+seconds = 4
+
+[[step]]
+action = "expect_distance"
+min = 5.0
+max = 200.0
+
+[[step]]
+action = "teleport"
+x = 600.0
+y = -2600.0
+z = 1.0
+
+[[step]]
+action = "hold_key"
+value = 87
+seconds = 4
+
+[[step]]
+action = "expect_frames_advance"
+value = 8
+min = 400
+
+[[step]]
+action = "set_setting"
+name = "frame_rate"
+id = "fps"
+contains = "30"
+
+[[step]]
+action = "quit"

@@ -1,0 +1,58 @@
+id = "mission_pass"
+name = "Mission pass"
+version = "1.2.0"
+author = "SACore"
+description = "Pass the current story mission by key: the game's own debug skip, or a jump into the mission's pass code"
+api_version = 1
+min_core_version = "1.3.0"
+dll = "mission_pass.dll"
+
+[config.enabled]
+default = true
+description = "Mission pass key active"
+
+[config.pass_key]
+default = 117
+min = 1
+max = 254
+description = "Windows key code that passes the current mission (117 = F6)"
+
+[config.confirm]
+default = true
+description = "Ask for a second key press within 3 s before passing"
+
+[config.debug_skip]
+default = true
+description = "Use Rockstar's own debug skip first (some missions then also move CJ, as in Rockstar's testing)"
+
+[config.allow_redirect]
+default = true
+description = "Jump straight into the mission's pass code when the debug skip is off or does not answer within 3 s"
+
+[config.show_messages]
+default = true
+description = "Show progress in the game's help box"
+
+[config.run_to]
+default = "off"
+allowed = ["off", "Big Smoke", "Ryder", "Tagging up Turf", "Cleaning the Hood", "Drive-thru", "Nines and AK's", "Drive-By", "Sweet's Girl", "Cesar Vialpando", "OG Loc", "Running Dog", "Wrong Side of the Tracks", "Just Business", "Home Invasion", "Catalyst", "Robbing Uncle Sam", "Life's a Beach", "Madd Dogg's Rhymes", "Management Issues", "House Party (first visit)", "House Party (party)", "Burning Desire", "Gray Imports", "Doberman", "Los Sepulcros", "High Stakes, Low-rider", "Reuniting the Families", "The Green Sabre", "Badlands", "First Date", "Body Harvest", "King in Exile", "First Base", "Wu Zi Mu", "Gone Courting", "Made in Heaven", "Farewell, My Love", "Are you going to San Fierro?", "Wear Flowers in your Hair", "555 WE TIP", "Deconstruction", "Back to School", "Air Raid", "Supply Lines...", "New Model Army", "Photo Opportunity", "Jizzy", "Jizzy (club)", "T-Bone Mendez", "Mike Toreno", "Outrider", "Snail Trail", "Ice Cold Killa", "Pier 69", "Toreno's Last Flight", "Mountain Cloud Boys", "Ran Fa Li", "Lure", "Amphibious Assault", "The Da Nang Thang", "Yay Ka-Boom-Boom", "Monster", "Zeroing In", "Test Drive", "Customs Fast Track", "Puncture Wounds", "Highjack", "Interdiction", "Verdant Meadows", "Learning to Fly", "N.O.E.", "Stowaway", "Black Project", "Green Goo", "Fender Ketchup", "Explosive Situation", "You've had your Chips", "Don Peyote", "Intensive Care", "The Meat Business", "Fish in a Barrel", "Freefall", "Misappropriation", "High Noon", "Madd Dogg", "Saint Mark's Bistro", "Architectural Espionage", "Key to her Heart", "Dam and Blast", "Cop Wheels", "Up, Up and Away!", "Breaking the Bank at Caligula's", "A Home In The Hills", "Vertical Bird", "Home Coming", "Cut Throat Business", "Beat Down on B Dup", "Grove 4 Life", "Riot", "Los Desperados", "End of the Line", "Story complete"]
+description = "Story runner: play the story up to this mission (passes every mission before it, answers the phone calls, buys the properties the story needs, stops next to its marker). Start from free roam or a new game; set back to off to stop"
+
+[config.buy_key]
+default = 9
+min = 1
+max = 254
+description = "Story runner: the key bound to the game's answer phone control (9 = Tab), pressed to buy the properties the story needs"
+
+[config.save_each]
+default = true
+description = "Story runner: save every story point it passes as a story save (one per mission, separate from your saves), so the next run_to to it can load at once"
+
+[config.load_story_saves]
+default = true
+description = "Story runner: load the story save of the chosen mission when this game is already past it or fresh (no mission passed); otherwise it plays on from your game"
+
+[config.save_to]
+default = "off"
+allowed = ["off", "slot1", "slot2", "slot3", "slot4", "slot5", "slot6", "slot7", "slot8"]
+description = "Story runner: save the reached story point into this menu slot (the slot's old save is backed up first)"

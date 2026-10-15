@@ -1,0 +1,75 @@
+# Preload: with the 4 GB flag set on the copy (tools/laa.py), every world model and its textures are loaded
+# once and kept; the pass must reach 100 % without hitting the address-space guard, and the game keeps running
+# through all three cities afterwards (nothing has to stream in again).
+name = "mod_streaming_preload"
+tier = "full"  # about a minute of loading: run with --tier full (streaming changes, releases)
+timeout_seconds = 400
+
+[mod_config.streaming_memory]
+preload = "world"
+
+[mod_config.cutscene_skip]
+auto_skip = true
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "expect_log"
+contains = "streaming_memory: ready:"
+timeout = 5
+
+[[step]]
+action = "expect_log"
+contains = "4 GB address space"
+timeout = 5
+
+[[step]]
+action = "expect_log"
+contains = "streaming_memory: preload (world):"
+timeout = 30
+
+[[step]]
+action = "expect_log"
+contains = "streaming_memory: preload 100%"
+fail_contains = "streaming_memory: preload stopped"
+timeout = 240
+
+# Los Santos, San Fierro, Las Venturas: the models are already there
+[[step]]
+action = "teleport"
+x = 1481.0
+y = -1750.0
+z = 15.4
+
+[[step]]
+action = "expect_frames_advance"
+value = 3
+min = 45
+
+[[step]]
+action = "teleport"
+x = -1990.0
+y = 137.0
+z = 27.6
+
+[[step]]
+action = "expect_frames_advance"
+value = 3
+min = 45
+
+[[step]]
+action = "teleport"
+x = 2027.0
+y = 1008.0
+z = 10.8
+
+[[step]]
+action = "expect_frames_advance"
+value = 3
+min = 45
+
+[[step]]
+action = "quit"

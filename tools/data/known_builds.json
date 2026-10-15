@@ -1,0 +1,21 @@
+{
+  "comment": "Known GTA SA executables. sha256 is the identifying key. Sources recorded per entry.",
+  "builds": [
+    {
+      "id": "newsteam_r2_lv",
+      "exe": "gta-sa.exe",
+      "size": 5971456,
+      "sha256": "aa07fcdc8723a2831f77a35491dea6cdd58f6733e3ac69a10ddf5cdf95034fe3",
+      "note": "Steam 'newsteam r2' German low-violence build, appid 12120 buildid 459558, PE timestamp 2014-12-01, PDB sa_PC_fin_ger_d3d9.pdb",
+      "source": "hashed from a Steam install 2026-10-13; MD5 d9cb35c898d3298ca904a63e10ee18d7 listed as NewSteam R2 German by gtasa-open-downgrader; plugin-sdk GameVersion.cpp signature GAME_STEAM_LV (dword 0x858C61 == 0x3539F633) matches"
+    },
+    {
+      "id": "us10_hoodlum",
+      "exe": "gta_sa.exe",
+      "size": 14383616,
+      "sha256": "a559aa772fd136379155efa71f00c47aad34bbfeae6196b0fe1047d0645cbd26",
+      "note": "1.0 US Hoodlum, PE timestamp 2005-04-28, no ASLR, .HOODLUM section",
+      "source": "produced 2026-10-13 by tools/apply_downgrade.py with gtasa-open-downgrader v0.2.3 patches; MD5 170b3a9108687b26da2d8901c6948a18 = manifest target_hash; plugin-sdk GAME_10US_HOODLUM signature (dword 0x401000 == 0x16197BE9) matches"
+    }
+  ]
+}

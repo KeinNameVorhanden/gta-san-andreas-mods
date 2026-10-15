@@ -1,0 +1,64 @@
+# Story runner, one chunk of the whole story: the Badlands: Catalina's four jobs (researched entries), King in Exile, Wu Zi Mu and Farewell, My Love (the cutscene stages play, both races are won through the race skip).
+# Starts from the save in slot6 (made by the previous chunk), stops next to the marker of 'Are you going to San Fierro?' and saves that point into slot5 for the
+# next chunk. Phone calls are answered by the runner. Fails at once when the runner stops early.
+name = "mod_story_runner_badlands"
+tier = "full"  # long: run with --tier full (story runner changes, releases)
+chain = "story"  # each chunk starts from the save the one before made: one copy, in order
+chain_order = 2
+timeout_seconds = 2700
+
+[mod_config.mission_pass]
+load_story_saves = false  # play every mission (the chunk also writes the story saves on the way)
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 60
+
+[[step]]
+action = "load_save"
+name = "slot6"
+
+[[step]]
+action = "wait_seconds"
+value = 15
+
+[[step]]
+action = "wait_state"
+value = 9
+timeout = 90
+
+[[step]]
+action = "wait_seconds"
+value = 3
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "save_to"
+contains = "slot5"
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "run_to"
+contains = "Are you going to San Fierro?"
+
+[[step]]
+action = "expect_log"
+contains = "mission_pass: Ready for Are you going to San Fierro?: saved to slot5."
+fail_contains = "mission_pass: Story runner stopped"
+timeout = 2400
+
+[[step]]
+action = "expect_save_valid"
+name = "slot5"
+
+[[step]]
+action = "set_setting"
+name = "mission_pass"
+id = "save_to"
+contains = "off"
+
+[[step]]
+action = "quit"
