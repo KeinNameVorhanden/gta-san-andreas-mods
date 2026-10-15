@@ -84,6 +84,7 @@ Only rows that were actually tested appear as "tested". Everything else says wha
 | Suspect a SACore patch | `sacore\diagnostics\patches.txt` | add its id to `core.toml [patches] disabled` and restart |
 | Suspect any mod | | disable mods with `python tools/modman.py --game <install> --apply disable <name>` (see `list`), or apply a profile saved earlier with `--apply profile apply <name>`; re-enable one by one |
 | Device Selection dialog appears | `core.toml [stability] skip_device_selection` | set it to `true` |
+| Game starts in 640x480 on a PC with several monitors | `core.toml [stability] device_selection_resolution` | set the resolution, for example `"1920x1080"`; the log line "Device Selection: resolution ..." says what was chosen or lists what the dialog offered |
 | Saves missing after switching builds | each install has its own `sacore\userdata\GTA San Andreas User Files` | intended (save formats differ between builds); copy only between installs of the same build |
 | Save damaged | `python tools/saves.py --game <install> list` | `python tools/saves.py --game <install> --apply restore <slot> <backup>` (names from `backups <slot>`) |
 | Need help from someone else | | `python tools/collect_logs.py --game <install> --out <folder>` (no saves, no personal files; paths may contain the Windows user name) |

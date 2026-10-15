@@ -13,7 +13,8 @@ add_executable(sacore_unit_tests
     save_file_test.cpp
     content_registry_test.cpp
     zip_writer_test.cpp
-    build_info_test.cpp)
+    build_info_test.cpp
+    device_selection_test.cpp)
 sacore_target(sacore_unit_tests)
 target_link_libraries(sacore_unit_tests PRIVATE sacore_core doctest::doctest)
 add_test(NAME sacore_unit_tests COMMAND sacore_unit_tests)

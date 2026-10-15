@@ -116,12 +116,8 @@ Highlights:
 
 ## Install
 
-There is no ready-made download: you build SACore and the installer package yourself (about 10 minutes the first
-time). Requirements:
-
-- Windows 10 or 11, Python 3.11 or newer, git
-- Visual Studio 2022 or 2026 with "Desktop development with C++" (MSVC x86 toolset), CMake 3.25 or newer
-- Your own GTA San Andreas (the Steam version), about 5 GB free per play copy
+Requirements: Windows 10 or 11, Python 3.11 or newer, your own GTA San Andreas (the Steam version), about 5 GB free
+per play copy.
 
 ### 1. Make a play copy
 
@@ -134,64 +130,59 @@ robocopy "C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto San And
 The copy runs without Steam. Optionally make a second copy and downgrade it to 1.0 US (most classic mods need it),
 see [docs/INSTALL.md](docs/INSTALL.md) section 2.
 
-### 2. Build
+### 2. Get the package
+
+Download `SACore-<version>.zip` from the [Releases](https://github.com/KeinNameVorhanden/gta-san-andreas-mods/releases)
+page and unpack it anywhere. It contains the installer (`install.py`), SACore, all 24 mods, Ultimate ASI Loader and
+SilentPatch with their license texts. Every release is built and tested by the repository's GitHub workflow
+(`.github/workflows/release.yml`) from the tagged source.
+
+To build the same package yourself instead, you also need Visual Studio 2026 with "Desktop development with C++"
+(MSVC x86 toolset), a CMake with the Visual Studio 2026 generator (4.3 is tested) and git:
 
 ```bat
 git clone https://github.com/KeinNameVorhanden/gta-san-andreas-mods.git
 cd gta-san-andreas-mods
 cmake --preset x86
 cmake --build --preset x86-release
-```
-
-CMake fetches MinHook, toml++, Dear ImGui and doctest at pinned versions; nothing third-party is committed.
-
-### 3. Build the install package
-
-The package bundles the two components SACore runs with. Download their release archives into `downloads\`:
-
-| Archive | From |
-|---|---|
-| `downloads\ual\Ultimate-ASI-Loader-v9.7.4.zip` | [Ultimate ASI Loader](https://github.com/ThirteenAG/Ultimate-ASI-Loader/releases) 9.7.4 |
-| `downloads\silentpatch\SilentPatchSA-34.1.zip` | [SilentPatch](https://github.com/CookiePLMonster/SilentPatch/releases) for San Andreas, 34.1 |
-
-```bat
+python tools/fetch_components.py
 python tools/package_release.py
 ```
 
-This writes `dist\SACore-<version>\` (and a zip of it) with `install.py`, a hash manifest and the payload.
+CMake fetches MinHook, toml++, Dear ImGui and doctest at pinned versions; `fetch_components.py` downloads Ultimate
+ASI Loader 9.7.4 and SilentPatch 34.1 from their official releases and checks their SHA-256. The package lands in
+`dist\SACore-<version>\` and `dist\SACore-<version>.zip`. With Visual Studio 2022 configure with
+`cmake -S . -B build/x86 -G "Visual Studio 17 2022" -A Win32` and build with `cmake --build build/x86 --config Release`.
 
-### 4. Install into the play copy
+### 3. Install into the play copy
 
-From the package folder, first a dry run, then the real install:
+From the unpacked package folder, first a dry run, then the real install:
 
 ```bat
-cd dist\SACore-1.3.5
-python install.py --game "D:\Games\GTASA-Play\steam" install --with devtools,session_stats
-python install.py --game "D:\Games\GTASA-Play\steam" --apply install --with devtools,session_stats
+python install.py --game "D:\Games\GTASA-Play\steam" install --with all
+python install.py --game "D:\Games\GTASA-Play\steam" --apply install --with all
 python install.py --game "D:\Games\GTASA-Play\steam" verify
 ```
 
-Installed: Ultimate ASI Loader (`dinput8.dll`), SilentPatch and SACore (`scripts\`), and the optional mods you
-picked. A file that was already there is backed up and comes back on uninstall. The installer refuses the Steam
-folder, unknown executables and a running game. Every step is a dry run until `--apply`.
+`--with all` installs every mod; to pick, name them instead (`--with devtools,quicksave,cutscene_skip`). Installed:
+Ultimate ASI Loader (`dinput8.dll`), SilentPatch and SACore (`scripts\`) and the chosen mods (`sacore\mods\`). A file
+that was already there is backed up and comes back on uninstall. The installer refuses the Steam folder, unknown
+executables and a running game. Every step is a dry run until `--apply`.
 
-### 5. Add the mods
-
-Package each mod you want and install it with the mod manager (dry run first, then `--apply`):
+Mods from other sources install with the mod manager (dry run first, then `--apply`), which also enables and disables
+SACore mods, ASI and CLEO plugins, saves and applies profiles and checks dependencies; it never deletes anything
+(removed files go to `sacore\backups\`):
 
 ```bat
-python tools/package_mod.py quicksave
-python tools/modman.py --game "D:\Games\GTASA-Play\steam" install dist\quicksave-1.0.0.zip --apply
 python tools/modman.py --game "D:\Games\GTASA-Play\steam" list
+python tools/modman.py --game "D:\Games\GTASA-Play\steam" --apply install other_mod.zip
 ```
 
-The mod manager also enables and disables SACore mods, ASI and CLEO plugins, saves and applies profiles, and checks
-dependencies; it never deletes anything (removed files go to `sacore\backups\`).
-
-### 6. Optional: the 4 GB address space
+### 4. Optional: the 4 GB address space
 
 The game is a 32-bit program and gets 2 GB of address space. With the Large Address Aware flag set in its executable
-it gets 4 GB on 64-bit Windows, which the preload needs. Set it in the play copy only, with the game closed:
+it gets 4 GB on 64-bit Windows, which the preload needs. Set it in the play copy only, with the game closed (from a
+clone of this repository):
 
 ```bat
 python tools/laa.py --game "D:\Games\GTASA-Play\steam"
@@ -238,6 +229,7 @@ Common framework settings in `core.toml` (all listed with descriptions in the fi
 | `[saves] backups_per_slot` | 10 | backups kept per save slot (`sacore\save-backups`) |
 | `[saves] separate_user_files` | false (the installer sets it for 1.0 US copies) | own User Files folder inside the play copy |
 | `[stability] crash_dumps` | true | write a minidump with every crash report |
+| `[stability] device_selection_resolution` | "" | with several monitors the game asks for its device and resolution at every start; SACore answers the dialog, by default with its first entry (640x480, 16 bit). Set for example `"1920x1080"` (deepest colour depth offered) or `"1280x720x32"` |
 | `[mods] enabled` | true | load mods at all (safe mode switches this off) |
 | `[patches] disabled` | "" | switch single SACore patches off by id (`sacore\diagnostics\patches.txt`) |
 

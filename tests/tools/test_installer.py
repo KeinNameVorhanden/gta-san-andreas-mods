@@ -43,9 +43,10 @@ class InstallerTest(unittest.TestCase):
             target = root / "payload" / rel
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
-            group = "devtools" if "devtools" in rel else "base"
+            group = rel.split("/")[2] if rel.startswith("sacore/mods/") else "base"  # one group per mod
             entries.append({"path": rel, "sha256": hashlib.sha256(data).hexdigest(), "group": group})
-        manifest = {"version": version, "optional_groups": ["devtools"], "files": entries,
+        optional = sorted({e["group"] for e in entries if e["group"] != "base"})
+        manifest = {"version": version, "optional_groups": optional, "files": entries,
                     "known_builds": [{"id": "us10_hoodlum", "exe": "gta_sa.exe",
                                       "sha256": hashlib.sha256(US10_EXE).hexdigest()},
                                      {"id": "newsteam_r2_lv", "exe": "gta-sa.exe",
@@ -112,6 +113,21 @@ class InstallerTest(unittest.TestCase):
         after = {k: v for k, v in snapshot(self.game).items() if not k.startswith("sacore/install/")}
         self.assertEqual(after, {k: v for k, v in installed_v1.items() if not k.startswith("sacore/install/")})
         self.assertEqual(self.run_installer(self.v1, "verify")[0], 0)
+
+    def test_with_all_installs_every_mod_and_an_unknown_name_installs_nothing(self):
+        package = self.make_package(Path(self.temp.name) / "pkg_all", "1.4.0",
+                                    {"dinput8.dll": b"ual", "scripts/SACore.asi": b"core",
+                                     "sacore/mods/devtools/devtools.dll": b"dev",
+                                     "sacore/mods/quicksave/quicksave.dll": b"qs"})
+        before = snapshot(self.game)
+        code, text = self.run_installer(package, "--apply", "install", "--with", "devtools,quicksve")
+        self.assertEqual(code, 2)
+        self.assertIn("unknown optional component(s): quicksve", text)
+        self.assertEqual(snapshot(self.game), before)
+        code, text = self.run_installer(package, "--apply", "install", "--with", "all")
+        self.assertEqual(code, 0, text)
+        self.assertEqual((self.game / "sacore/mods/devtools/devtools.dll").read_bytes(), b"dev")
+        self.assertEqual((self.game / "sacore/mods/quicksave/quicksave.dll").read_bytes(), b"qs")
 
     def test_refusals_steam_folder_unknown_build_install_twice(self):
         steam = Path(self.temp.name) / "SteamLibrary" / "steamapps" / "common" / "GTA SA"

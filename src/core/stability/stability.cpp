@@ -8,6 +8,7 @@
 #include <psapi.h>
 
 #include <algorithm>
+#include <cstdio>
 #include <cstring>
 #include <format>
 #include <fstream>
@@ -333,6 +334,86 @@ void Stability::PackLeftoverReports() {
     }
 }
 
+namespace {
+
+// The numbers in a text, in order ("1280 x 720 x 16 (WIDESCREEN)" -> 1280, 720, 16).
+std::vector<unsigned> Numbers(std::string_view text) {
+    std::vector<unsigned> numbers;
+    for (size_t i = 0; i < text.size();) {
+        if (text[i] < '0' || text[i] > '9') {
+            ++i;
+            continue;
+        }
+        unsigned value = 0;
+        for (; i < text.size() && text[i] >= '0' && text[i] <= '9' && value < 100000; ++i) {
+            value = value * 10 + static_cast<unsigned>(text[i] - '0');
+        }
+        numbers.push_back(value);
+    }
+    return numbers;
+}
+
+}  // namespace
+
+int PickVideoModeEntry(const std::vector<std::string>& entries, std::string_view wanted) {
+    const std::vector<unsigned> want = Numbers(wanted);
+    const bool shapeOk = (want.size() == 2 || want.size() == 3) &&
+                         wanted.find_first_not_of("0123456789xX ") == std::string_view::npos;
+    if (!shapeOk || want[0] == 0 || want[1] == 0) {
+        return -1;
+    }
+    const unsigned width = want[0], height = want[1], depth = want.size() == 3 ? want[2] : 0;
+    const int parsed = static_cast<int>(want.size());
+    int best = -1;
+    unsigned bestDepth = 0;
+    for (size_t i = 0; i < entries.size(); ++i) {
+        const std::vector<unsigned> entry = Numbers(entries[i]);
+        if (entry.size() < 3 || entry[0] != width || entry[1] != height) {
+            continue;
+        }
+        const unsigned d = entry[2];
+        if (parsed == 3 ? d == depth : d > bestDepth) {
+            best = static_cast<int>(i);
+            bestDepth = d;
+            if (parsed == 3) {
+                break;
+            }
+        }
+    }
+    return best;
+}
+
+// The video mode list of the Device Selection dialog is combo box 1001 on both builds; on OK the game reads its
+// current selection (CB_GETCURSEL, then the item data = the RenderWare mode).
+void Stability::SelectDialogResolution(HWND dialog) {
+    const std::string& wanted = settings_.deviceSelectionResolution;
+    const HWND list = GetDlgItem(dialog, 1001);
+    if (wanted.empty() || !list) {
+        return;
+    }
+    std::vector<std::string> entries;
+    const LRESULT count = SendMessageA(list, CB_GETCOUNT, 0, 0);
+    for (LRESULT i = 0; i < count; ++i) {
+        char text[64] = {};
+        if (SendMessageA(list, CB_GETLBTEXTLEN, static_cast<WPARAM>(i), 0) < static_cast<LRESULT>(sizeof(text))) {
+            SendMessageA(list, CB_GETLBTEXT, static_cast<WPARAM>(i), reinterpret_cast<LPARAM>(text));
+        }
+        entries.emplace_back(text);
+    }
+    const int index = PickVideoModeEntry(entries, wanted);
+    if (index >= 0) {
+        SendMessageA(list, CB_SETCURSEL, static_cast<WPARAM>(index), 0);
+    }
+    std::string offered;
+    for (const std::string& entry : entries) {
+        offered += (offered.empty() ? "" : ", ") + entry;
+    }
+    logger_.Logf(index >= 0 ? LogLevel::Info : LogLevel::Warn, LogCategory::Runtime, "stability",
+                 "Device Selection: resolution {} {} ({} entries offered{})", wanted,
+                 index >= 0 ? "chosen as \"" + entries[static_cast<size_t>(index)] + "\"" : "not offered", count,
+                 index >= 0 ? "" : ": " + offered);
+}
+
 LRESULT CALLBACK Stability::DialogWatcher(int code, WPARAM wParam, LPARAM lParam) {
     if (code == HCBT_ACTIVATE) {
         const auto dialog = reinterpret_cast<HWND>(wParam);
@@ -341,8 +422,12 @@ LRESULT CALLBACK Stability::DialogWatcher(int code, WPARAM wParam, LPARAM lParam
         GetClassNameW(dialog, className, 16);
         GetWindowTextW(dialog, title, 64);
         if (wcscmp(className, L"#32770") == 0 && wcscmp(title, kDeviceSelectionTitle) == 0) {
-            // Press OK with the default selection, exactly like a user would, and keep the dialog off screen.
+            // Press OK with the default selection (or the configured resolution), exactly like a user would, and
+            // keep the dialog off screen.
             SetWindowPos(dialog, nullptr, -32000, -32000, 0, 0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+            if (g_stability) {
+                g_stability->SelectDialogResolution(dialog);
+            }
             PostMessageW(dialog, WM_COMMAND, MAKEWPARAM(IDOK, BN_CLICKED),
                          reinterpret_cast<LPARAM>(GetDlgItem(dialog, IDOK)));
             if (g_stability) {

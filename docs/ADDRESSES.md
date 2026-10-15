@@ -75,6 +75,7 @@ Game state values (WinMain loop, both builds): 0 start-up, 1 init logo movie, 2 
 |---|---|---|---|
 | crash filter (not a patch) | `SetUnhandledExceptionFilter` at start, re-asserted on the first frame and every 30 s | keep the SACore crash filter first; a filter set later by the game or plugins is chained after it | `[stability] crash_dumps` |
 | CBT hook (not a patch) | `SetWindowsHookEx(WH_CBT)` on the game thread | confirm the "Device Selection" dialog with its default device | `[stability] skip_device_selection` |
+| (same hook, a selection) | the dialog's video mode list is combo box 1001 on both builds (1.0 dialog procedure 0x745E50, newsteam 0x779D47 area); on OK the game takes `CB_GETCURSEL`, then `CB_GETITEMDATA` as the RenderWare mode (1.0 `GcurSelVM` 0x8D6220, newsteam 0xD1DC54). Entries read like `1280 x 720 x 32 (WIDESCREEN)` | choose the resolution before OK | `[stability] device_selection_resolution` |
 | `stability.log_message_boxes` | game import table entry `user32!MessageBoxA` | log the game's error message boxes | always |
 
 Finding: neither an inline hook on `user32!DialogBoxParamA` nor the game's import entry saw the Device Selection dialog on newsteam with SilentPatch installed, although `psSelectDevice` (`FUN_0077a110`) is the only caller in the exe; the window-level CBT hook works on both builds.

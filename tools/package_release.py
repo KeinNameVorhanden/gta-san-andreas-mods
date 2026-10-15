@@ -7,11 +7,11 @@ Contents:
         dinput8.dll                   Ultimate ASI Loader (downloads/ual)
         scripts/SilentPatchSA.asi/.ini SilentPatch (downloads/silentpatch)
         scripts/SACore.asi            the framework (Release build)
-        sacore/mods/<id>/             optional mods: devtools, session_stats
+        sacore/mods/<id>/             optional: every mod in mods/ (install.py --with <ids> or --with all)
     INSTALL.md, RELEASE_NOTES.md, LICENSE, THIRD_PARTY.md, licenses/
 
-The package bundles two third-party MIT components (Ultimate ASI Loader, SilentPatch) with their license texts; their
-release archives are downloaded by hand into downloads/ (README.md, "Build the install package").
+The package bundles two third-party MIT components (Ultimate ASI Loader, SilentPatch) with their license texts;
+tools/fetch_components.py downloads their release archives into downloads/ and checks their SHA-256.
 
 Usage:
     python tools/package_release.py [--config Release]
@@ -34,7 +34,9 @@ REPO = Path(__file__).resolve().parent.parent
 BUILD = REPO / "build" / "x86"
 DOWNLOADS = REPO / "downloads"
 DIST = REPO / "dist"
-OPTIONAL_MODS = ("devtools", "session_stats")
+# Every mod with a manifest is an optional component (installed with --with <id>,... or --with all); mods/testing
+# holds the test mods and is never shipped.
+OPTIONAL_MODS = tuple(sorted(p.parent.name for p in (REPO / "mods").glob("*/mod.toml")))
 ARCHIVES = {
     "ual": (DOWNLOADS / "ual" / "Ultimate-ASI-Loader-v9.7.4.zip", {"dinput8.dll": "dinput8.dll"}),
     "silentpatch": (DOWNLOADS / "silentpatch" / "SilentPatchSA-34.1.zip",

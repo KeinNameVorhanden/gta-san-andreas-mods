@@ -10,12 +10,12 @@ dry-run unless --apply is given. Nothing is ever deleted: uninstall moves the mo
 Usage:
     python tools/modman.py --game <dir> list
     python tools/modman.py --game <dir> check
-    python tools/modman.py --game <dir> disable <item> [--apply]     # item: mod id, asi:<path>, cleo:<file>, modloader:<name>
-    python tools/modman.py --game <dir> enable <item> [--apply]
+    python tools/modman.py --game <dir> [--apply] disable <item>     # item: mod:<id>, asi:<path>, cleo:<file>, modloader:<name>
+    python tools/modman.py --game <dir> [--apply] enable <item>
     python tools/modman.py --game <dir> profile save <name>
-    python tools/modman.py --game <dir> profile apply <name> [--apply]
-    python tools/modman.py --game <dir> install <mod.zip> [--apply]
-    python tools/modman.py --game <dir> uninstall <mod id> [--apply]
+    python tools/modman.py --game <dir> [--apply] profile apply <name>
+    python tools/modman.py --game <dir> [--apply] install <mod.zip>
+    python tools/modman.py --game <dir> [--apply] uninstall <mod id>
 """
 from __future__ import annotations
 

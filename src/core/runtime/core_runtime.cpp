@@ -84,6 +84,9 @@ ConfigSchema CoreRuntime::Schema() {
                     "crashes", {}, {}, {}},
         SettingSpec{"stability.skip_device_selection", true, "Confirm the multi-monitor Device Selection dialog "
                     "automatically with its default device", {}, {}, {}},
+        SettingSpec{"stability.device_selection_resolution", std::string(""), "Resolution the confirmed Device "
+                    "Selection dialog picks, for example 1280x720 or 1920x1080x32 (empty: the dialog's default; "
+                    "the dialog appears on systems with several monitors)", {}, {}, {}},
         SettingSpec{"saves.separate_user_files", false, "Keep this install's saves and settings in "
                     "sacore\\userdata instead of the shared Documents folder (recommended when several game "
                     "versions are installed)", {}, {}, {}},
@@ -175,6 +178,7 @@ void CoreRuntime::Initialize() {
     StabilitySettings stabilitySettings;
     stabilitySettings.crashDumps = config.GetBool("stability.crash_dumps");
     stabilitySettings.skipDeviceSelection = config.GetBool("stability.skip_device_selection");
+    stabilitySettings.deviceSelectionResolution = config.GetString("stability.device_selection_resolution");
     stabilitySettings.testCrashAfterSeconds = static_cast<int>(config.GetInt("testing.crash_after_seconds"));
     stability_->Install(stabilitySettings, dataDirectory_ / L"crashes", [this] { return CrashContext(); });
     stability_->SetPackageFiles([this] {

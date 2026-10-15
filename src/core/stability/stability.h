@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <functional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -18,8 +19,13 @@ namespace sacore {
 struct StabilitySettings {
     bool crashDumps = true;
     bool skipDeviceSelection = true;
+    std::string deviceSelectionResolution;  // "WxH" or "WxHxD"; empty: the dialog's default entry
     int testCrashAfterSeconds = 0;  // TEST ONLY: deliberate access violation in the frame hook
 };
+
+// Index of the Device Selection list entry ("1280 x 720 x 32 (WIDESCREEN)", the game's own text) matching `wanted`
+// ("1280x720" takes the deepest colour depth offered, "1280x720x16" exactly that), or -1.
+int PickVideoModeEntry(const std::vector<std::string>& entries, std::string_view wanted);
 
 class Stability {
 public:
@@ -41,6 +47,7 @@ public:
 private:
     static LONG WINAPI CrashFilter(EXCEPTION_POINTERS* pointers);
     static LRESULT CALLBACK DialogWatcher(int code, WPARAM wParam, LPARAM lParam);
+    void SelectDialogResolution(HWND dialog);
     static int WINAPI HookedMessageBoxA(HWND, LPCSTR, LPCSTR, UINT);
     void WriteCrashReport(EXCEPTION_POINTERS* pointers);
 

@@ -6,11 +6,11 @@ are replaced or removed are moved to <game>/sacore/install/backups/<time>/ first
 Saves, settings, logs and crash reports under <game>/sacore are never touched.
 
 Usage:
-    python install.py --game <play copy> install [--with devtools,session_stats] [--apply]
-    python install.py --game <play copy> update [--apply]          # same package contents over an older install
+    python install.py --game <play copy> [--apply] install [--with all | --with devtools,quicksave,...]
+    python install.py --game <play copy> [--apply] update          # same package contents over an older install
     python install.py --game <play copy> verify
-    python install.py --game <play copy> uninstall [--apply]
-    python install.py --game <play copy> recover safe-mode|normal|rollback [--apply]
+    python install.py --game <play copy> [--apply] uninstall
+    python install.py --game <play copy> [--apply] recover safe-mode|normal|rollback
 
 Refuses: the original Steam folder (path contains "steamapps") unless --allow-steam-folder, an executable that is
 not one of the supported builds unless --force-unknown-build, and a running game.
@@ -143,6 +143,8 @@ class Installer:
         if old is not None and not update:
             self.out(f"SACore {old['version']} is already installed here; use update.")
             return 2
+        if "all" in groups:
+            groups = (groups - {"all"}) | set(self.manifest["optional_groups"])
         unknown = groups - set(self.manifest["optional_groups"])
         if unknown:
             self.out(f"unknown optional component(s): {', '.join(sorted(unknown))}; "
@@ -396,7 +398,8 @@ def main(argv: list[str], package: Path = HERE, out=print) -> int:
     commands = parser.add_subparsers(dest="command", required=True)
     for name in ("install", "update"):
         sub = commands.add_parser(name)
-        sub.add_argument("--with", dest="groups", default="", help="optional components, comma-separated")
+        sub.add_argument("--with", dest="groups", default="",
+                         help="optional components (mod ids), comma-separated, or all")
     commands.add_parser("verify")
     commands.add_parser("uninstall")
     recover = commands.add_parser("recover")

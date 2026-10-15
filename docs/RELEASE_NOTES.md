@@ -1,5 +1,16 @@
 # SACore release notes
 
+## 1.4.0
+
+- Releases on GitHub: `SACore-<version>.zip` with the installer, SACore, all 24 mods, Ultimate ASI Loader and
+  SilentPatch, built and tested by the repository's workflow from the tagged source.
+- Installer: `--with all` installs every mod; every mod in the package is an optional component.
+- `tools/fetch_components.py` downloads the two bundled components from their official releases and checks their
+  SHA-256, for building the package yourself.
+- Resolution on PCs with several monitors: the game asks for its device and resolution at every start and SACore
+  answers for it; `[stability] device_selection_resolution` (for example `"1920x1080"`) now picks the resolution
+  instead of the dialog's first entry (640x480, 16 bit).
+
 ## 1.2.x and 1.3.x
 
 The QoL mod set (overview with keys: docs/MODS.md):
